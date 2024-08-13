@@ -11,6 +11,7 @@ import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import Form from "./views/form.jsx";
 import FormEditar from "./views/formeditar.jsx";
+import Contactos from "./views/contactos.jsx";
 
 //create your first component
 const Layout = () => {
@@ -29,6 +30,7 @@ const Layout = () => {
 						<Route path="/single/:theid" element={<Single />} />
 						<Route path="*" element={<h1>Not found!</h1>} />
 						<Route path="/editar/:id" element={<FormEditar />} />
+						
 					</Routes>
 					<Footer />
 				</ScrollToTop>

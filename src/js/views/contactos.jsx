@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Link, useParams } from "react-router-dom";
-
+import { Context } from '../store/appContext';
 
 
 const Contactos = () => {
-
+  const{store, actions} = useContext(Context)
   const [contactos, setContactos] = useState([])
 
-  useEffect(() => {
-    fetch("https://playground.4geeks.com/contact/agendas/agendaproyecto/contacts")
-      .then(resp => resp.json())
-      .then(resp => setContactos(resp.contacts))
-      .catch(error => console.log(error))
 
+  useEffect(() => {
+    actions.getContacts()
   }, [])
 
   const borrar = (e, id) => {
 
 
 
-    fetch(`https://playground.4geeks.com/contact/agendas/agendaproyecto/contacts/${id}`,
+    fetch(`https://playground.4geeks.com/contact/agendas/agendaproyecto/store.contacts/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -29,9 +26,9 @@ const Contactos = () => {
       })
       .then(resp => {
         if (resp.ok) {
-          fetch("https://playground.4geeks.com/contact/agendas/agendaproyecto/contacts")
+          fetch("https://playground.4geeks.com/contact/agendas/agendaproyecto/store.contacts")
             .then(resp => resp.json())
-            .then(resp => setContactos(resp.contacts))
+            .then(resp => setContactos(resp.store.contacts))
             .catch(error => console.log(error))
         }
       })
@@ -41,9 +38,9 @@ const Contactos = () => {
 
   return (
     <div>
-      {contactos.map((contacto) =>
-        <div class="card">
-          <div class="card-body">
+      {store.contacts && store.contacts.length > 0 && store.contacts.map((contacto) =>
+        <div className="card" key={contacto.id}>
+          <div className="card-body">
             <h1>{contacto.name}</h1>
             <h2>{contacto.phone}</h2>
             <Link to={`/editar/${contacto.id}`}>Ir a Editar</Link>

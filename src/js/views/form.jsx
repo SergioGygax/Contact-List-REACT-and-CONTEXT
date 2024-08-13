@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { Context } from "../store/appContext"
+import { useNavigate } from 'react-router'
 
 const Form = () => {
-
+    const {store, actions} = useContext(Context)
     const [contacto, setContacto] = useState ({
         "name": "",
         "phone": "",
         "email": "",
         "address": "",
     })
-
+    const navigate = useNavigate()
     const nuevoContacto = (e) => {
 
         e.preventDefault()       
@@ -22,8 +24,10 @@ const Form = () => {
                     contacto
                 )
             }
-        )
-        setContacto(
+        ) .then(resp => resp.json())
+        .then(data => {
+          actions.getContacts()
+          setContacto(
             {
                 "name": "",
                 "phone": "",
@@ -31,6 +35,9 @@ const Form = () => {
                 "address": "",
             }
         )
+        navigate("/")
+        })
+        
     }
 
   return (
